@@ -14,13 +14,21 @@ const guardianSchema = new Schema<Guardian>({
 const studentSchema = new Schema<Student>({
   id: { type: String },
   name: userSchema,
-  gender: ['male', 'female'],
+  gender: {
+    type: String,
+    enum: ['male', 'female'],
+    required: true,
+  },
   dateOfBirth: { type: String },
   address: { type: String },
   phone: { type: String, required: true },
   guardian: guardianSchema,
   profileImage: { type: String },
-  isActive: ['active', 'blocked'],
+  isActive: {
+    type: String,
+    enum: ['active', 'blocked'],
+    default: 'active',
+  },
 });
 
 export const StudentModel = model<Student>('Student', studentSchema);
