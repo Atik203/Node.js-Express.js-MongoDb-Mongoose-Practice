@@ -1,20 +1,26 @@
-import { Schema } from 'mongoose';
-import { Student } from './student.interface';
+import { model, Schema } from 'mongoose';
+import { Guardian, Student, UserName } from './student.interface';
+
+const userSchema = new Schema<UserName>({
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+});
+
+const guardianSchema = new Schema<Guardian>({
+  fatherName: { type: String },
+  motherName: { type: String },
+});
 
 const studentSchema = new Schema<Student>({
   id: { type: String },
-  name: {
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-  },
+  name: userSchema,
   gender: ['male', 'female'],
   dateOfBirth: { type: String },
   address: { type: String },
   phone: { type: String, required: true },
-  guardian: {
-    fatherName: { type: String },
-    motherName: { type: String },
-  },
+  guardian: guardianSchema,
   profileImage: { type: String },
   isActive: ['active', 'blocked'],
 });
+
+const Student = model<Student>('Student', studentSchema);
