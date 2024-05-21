@@ -3,7 +3,6 @@ import {
   StudentModel,
   TGuardian,
   TStudent,
-  TStudentMethods,
   TUserName,
 } from './student.interface';
 
@@ -45,7 +44,7 @@ const guardianSchema = new Schema<TGuardian>({
   },
 });
 
-const studentSchema = new Schema<TStudent, StudentModel, TStudentMethods>({
+const studentSchema = new Schema<TStudent, StudentModel>({
   id: { type: String, unique: true, required: [true, 'ID is required'] },
   name: {
     type: userSchema,
@@ -75,10 +74,19 @@ const studentSchema = new Schema<TStudent, StudentModel, TStudentMethods>({
   },
 });
 
+// instance method
+/*
 studentSchema.methods.isUserExist = async function (id: string) {
   return this.model('Student').findOne
     ? this.model('Student').findOne({ id })
     : null;
+};
+*/
+
+// static method
+
+studentSchema.statics.isUserExist = async function (id: string) {
+  return this.findOne ? this.findOne({ id }) : null;
 };
 
 export const Student = model<TStudent, StudentModel>('Student', studentSchema);
