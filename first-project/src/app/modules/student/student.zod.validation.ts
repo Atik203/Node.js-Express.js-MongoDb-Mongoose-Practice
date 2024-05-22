@@ -32,6 +32,7 @@ const studentValidationSchemaZod = z.object({
   profileImage: z.string().optional(),
   isActive: z.enum(['active', 'blocked']).default('active'),
   phone: z.string(),
+  isDeleted: z.boolean().optional().default(false),
 });
 
 export default studentValidationSchemaZod;

@@ -67,6 +67,7 @@ const studentValidationSchema = Joi.object({
       'string.empty': 'Status is required',
       'any.only': 'Status must be either active or blocked',
     }),
+  isDeleted: Joi.boolean(),
 });
 
 export default studentValidationSchema;

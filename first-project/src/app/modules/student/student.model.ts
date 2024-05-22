@@ -72,6 +72,21 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     default: 'active',
     required: [true, 'Status is required'],
   },
+  isDeleted: { type: Boolean, default: false },
+});
+
+studentSchema.pre('find', async function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+studentSchema.pre('findOne', async function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+studentSchema.pre('aggregate', async function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+  next();
 });
 
 // instance method

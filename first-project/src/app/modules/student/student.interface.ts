@@ -10,6 +10,7 @@ export interface TStudent {
   profileImage?: string;
   isActive: 'active' | 'blocked';
   phone: string;
+  isDeleted: boolean;
 }
 
 export interface TGuardian {
