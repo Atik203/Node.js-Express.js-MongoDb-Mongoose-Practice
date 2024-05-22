@@ -44,35 +44,49 @@ const guardianSchema = new Schema<TGuardian>({
   },
 });
 
-const studentSchema = new Schema<TStudent, StudentModel>({
-  id: { type: String, unique: true, required: [true, 'ID is required'] },
-  name: {
-    type: userSchema,
-    required: [true, 'Name is required'],
-  },
-  gender: {
-    type: String,
-    enum: {
-      values: ['male', 'female'],
-      message: 'Gender must be either male or female',
+const studentSchema = new Schema<TStudent, StudentModel>(
+  {
+    id: { type: String, unique: true, required: [true, 'ID is required'] },
+    name: {
+      type: userSchema,
+      required: [true, 'Name is required'],
     },
-    required: [true, 'Gender is required'],
+    gender: {
+      type: String,
+      enum: {
+        values: ['male', 'female'],
+        message: 'Gender must be either male or female',
+      },
+      required: [true, 'Gender is required'],
+    },
+    dateOfBirth: {
+      type: String,
+      required: [true, 'Date of Birth is required'],
+    },
+    address: { type: String, required: [true, 'Address is required'] },
+    phone: { type: String, required: [true, 'Phone number is required'] },
+    guardian: {
+      type: guardianSchema,
+      required: [true, 'Guardian information is required'],
+    },
+    profileImage: { type: String },
+    isActive: {
+      type: String,
+      enum: ['active', 'blocked'],
+      default: 'active',
+      required: [true, 'Status is required'],
+    },
+    isDeleted: { type: Boolean, default: false },
   },
-  dateOfBirth: { type: String, required: [true, 'Date of Birth is required'] },
-  address: { type: String, required: [true, 'Address is required'] },
-  phone: { type: String, required: [true, 'Phone number is required'] },
-  guardian: {
-    type: guardianSchema,
-    required: [true, 'Guardian information is required'],
+  {
+    toJSON: { virtuals: true },
   },
-  profileImage: { type: String },
-  isActive: {
-    type: String,
-    enum: ['active', 'blocked'],
-    default: 'active',
-    required: [true, 'Status is required'],
-  },
-  isDeleted: { type: Boolean, default: false },
+);
+
+// virtuals
+
+studentSchema.virtual('fullName').get(function (this: TStudent) {
+  return `${this.name.firstName} ${this.name.lastName}`;
 });
 
 studentSchema.pre('find', async function (next) {
