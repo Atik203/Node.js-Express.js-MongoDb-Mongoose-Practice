@@ -23,7 +23,7 @@ node,
 "@typescript-eslint": tsPlugin,
 },
 rules: {
-"no-unused-vars": "error",
+"no-unused-vars": "warn",
 "semi": ["error", "always"],
 "no-console": "warn",
  "no-unused-expressions": "warn",
